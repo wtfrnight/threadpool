@@ -93,7 +93,7 @@ inline ThreadPool::~ThreadPool()
 {
     {
         std::unique_lock<std::mutex> lock(queue_mutex);
-        stop = true;
+        stop = true;//工作线程可能正在运行（处于循环中，会频繁检查 stop 的值）
     }
     condition.notify_all();
     for(std::thread &worker: workers)
